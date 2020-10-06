@@ -356,7 +356,7 @@ class RNParallax extends Component {
   }
 
   renderCustomComponent = () => {
-    const {renderNavBar, renderImageForeground} = this.props;
+    const {renderImageForeground} = this.props;
     const imageOpacity = this.getImageOpacity();
     const imageTranslate = this.getImageTranslate();
 
