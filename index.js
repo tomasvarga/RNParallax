@@ -255,7 +255,7 @@ class RNParallax extends Component {
   }
 
   renderHeaderBackground() {
-    const {backgroundImage, backgroundColor, renderBackgroundOverlay, renderBackgroundImageWrapper} = this.props;
+    const {backgroundImage, backgroundColor, renderBackgroundImageOverlay, renderBackgroundImageWrapper} = this.props;
     const imageOpacity = this.getImageOpacity();
 
     return (
@@ -271,7 +271,7 @@ class RNParallax extends Component {
         {backgroundImage && !renderBackgroundImageWrapper && this.renderBackgroundImage()}
         {backgroundImage && renderBackgroundImageWrapper && this.renderBackgroundImageWrapper()}
         {!backgroundImage && this.renderPlainBackground()}
-        {renderBackgroundOverlay()}
+        {renderBackgroundImageOverlay()}
       </Animated.View>
     );
   }
@@ -303,8 +303,7 @@ class RNParallax extends Component {
   renderHeaderForeground() {
     const {renderNavBar} = this.props;
     const navBarOpacity = this.getNavBarForegroundOpacity();
-
-    return (
+     return (
       <Animated.View
         style={[
           styles.bar,
@@ -356,8 +355,28 @@ class RNParallax extends Component {
     );
   }
 
+  renderCustomComponent = () => {
+    const {renderImageForeground} = this.props;
+    const imageOpacity = this.getImageOpacity();
+    const imageTranslate = this.getImageTranslate();
+
+    return (
+      <Animated.View
+        style={[
+          styles.bar,
+          {
+            height: this.getHeaderHeight(),
+            opacity: imageOpacity,
+           transform: [{translateY: imageTranslate}],
+          },
+        ]}>
+        {renderImageForeground()}
+      </Animated.View>
+    );
+  }
+
   render() {
-    const {navbarColor, statusBarColor, containerStyle} = this.props;
+    const {navbarColor, statusBarColor, containerStyle, renderContentOverImage} = this.props;
     return (
       <View style={[styles.container, containerStyle]}>
         <StatusBar backgroundColor={statusBarColor || navbarColor} />
@@ -365,6 +384,7 @@ class RNParallax extends Component {
         {this.renderNavbarBackground()}
         {this.renderHeaderBackground()}
         {this.renderHeaderTitle()}
+        {this.renderCustomComponent()}
         {this.renderHeaderForeground()}
       </View>
     );
@@ -393,7 +413,7 @@ RNParallax.propTypes = {
   alwaysShowNavBar: PropTypes.bool,
   statusBarColor: PropTypes.string,
   scrollViewProps: PropTypes.object,
-  renderBackgroundOverlay: PropTypes.func,
+  renderBackgroundImageOverlay: PropTypes.func,
   renderBackgroundImageWrapper: PropTypes.func,
 };
 
@@ -418,7 +438,7 @@ RNParallax.defaultProps = {
   alwaysShowNavBar: true,
   statusBarColor: null,
   scrollViewProps: {},
-  renderBackgroundOverlay: () => null,
+  renderBackgroundImageOverlay: () => null,
   renderBackgroundImageWrapper: null,
 };
 
